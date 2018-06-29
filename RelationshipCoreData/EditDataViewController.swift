@@ -14,6 +14,8 @@ class EditDataViewController: UIViewController {
     @IBOutlet weak var deviceCodeTextField: UITextField!
     @IBOutlet weak var deviceTypeTextField: UITextField!
     @IBOutlet weak var ownerLabel: UILabel!
+    @IBOutlet weak var purchaseDateTextField: UITextField!
+    @IBOutlet weak var osversionTextField: UITextField!
     
     var selectedDevice: Device?
     var deviceCode:String?
@@ -36,6 +38,13 @@ class EditDataViewController: UIViewController {
                 self.ownerLabel.text = "Tap to Select"
             }else{
                 self.ownerLabel.text = selectedDevice?.owner?.name ?? ""
+            }
+            self.osversionTextField.text = selectedDevice?.osVersion
+            
+            if selectedDevice?.purchaseDate == nil {
+                self.purchaseDateTextField.placeholder = "Please enter Date"
+            }else{
+                self.purchaseDateTextField.text = selectedDevice?.purchaseDate
             }
         }
 
@@ -76,10 +85,8 @@ class EditDataViewController: UIViewController {
             switch action.style{
             case .default:
                 print("default")
-                
             case .cancel:
                 print("cancel")
-                
             case .destructive:
                 print("destructive")
             }}))
@@ -91,6 +98,8 @@ class EditDataViewController: UIViewController {
         self.selectedDevice?.name = self.deviceCodeTextField.text ?? ""
         self.selectedDevice?.deviceType = self.deviceTypeTextField.text ?? ""
         self.selectedDevice?.owner = self.user
+        self.selectedDevice?.osVersion = self.osversionTextField.text ?? ""
+        self.selectedDevice?.purchaseDate = self.purchaseDateTextField.text ?? ""
     }
     
     //MARK: Insert Operation in coredata using NSManagedObjectContext
@@ -107,6 +116,8 @@ class EditDataViewController: UIViewController {
             device.name = "Some Device #\(deviceName)"
             device.deviceType = deviceTypeTextField.text ?? ""
             device.owner = self.user
+            device.purchaseDate = self.purchaseDateTextField.text ?? ""
+            device.osVersion = self.osversionTextField.text ?? ""
     }
     
     

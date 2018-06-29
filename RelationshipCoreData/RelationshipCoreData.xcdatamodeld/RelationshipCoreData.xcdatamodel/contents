@@ -3,6 +3,8 @@
     <entity name="Device" representedClassName="Device" syncable="YES">
         <attribute name="deviceType" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="osVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purchaseDate" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="devices" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
@@ -10,7 +12,7 @@
         <relationship name="devices" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="owner" inverseEntity="Device" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Device" positionX="-36" positionY="9" width="128" height="90"/>
+        <element name="Device" positionX="-36" positionY="9" width="128" height="120"/>
         <element name="User" positionX="223" positionY="33" width="128" height="75"/>
     </elements>
 </model>

@@ -63,10 +63,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         //Create the NSManagedObject
         
-        for i in 1...25 {
+        for i in 1...10 {
             let device = Device.init(entity: entity, insertInto: persistentContainer.viewContext)
             device.name = "Some Device #\(i)"
             device.deviceType = i % 3 == 0 ? "Watch" : "iPhone"
+            device.osVersion = i % 3 == 0 ? "watchOS 4.6" : "iOS 11.3"
         }
     }
     

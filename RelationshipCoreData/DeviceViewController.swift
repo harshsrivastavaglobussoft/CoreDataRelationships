@@ -28,13 +28,17 @@ class DeviceViewController: UIViewController {
     }
     
     //MARK: Fetch Data From COREDATA model Devices
-    func LoadData() -> Void {
+    func LoadData(deviceTypeFilter: String? = nil) -> Void {
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate else {
                 return
         }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
+        if let deviceTypeFilter = deviceTypeFilter {
+            let filterPredicate = NSPredicate(format: "deviceType =[c] %@",deviceTypeFilter)
+            fetchRequest.predicate = filterPredicate
+        }
         do {
             if let resultsDevice = try appDelegate.persistentContainer.viewContext.fetch(fetchRequest) as? [Device]  {
                 self.DeviceTableArray = resultsDevice
@@ -42,6 +46,8 @@ class DeviceViewController: UIViewController {
         } catch {
             print("Cannot fetch device")
         }
+        
+        self.deviceTableView.reloadData()
     }
     
     //MARK: view will appear 
@@ -49,7 +55,6 @@ class DeviceViewController: UIViewController {
         super.viewWillAppear(true)
         selectedDevice = nil
         self.LoadData()
-        self.deviceTableView.reloadData()
     }
     //MARK: prepare segue method and pass the data to next view controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -65,6 +70,27 @@ class DeviceViewController: UIViewController {
 
     }
     
+    @IBAction func addFilter(_ sender: Any) {
+        let sheet = UIAlertController(title: "Filter Options", message: nil, preferredStyle: .actionSheet)
+        
+        sheet.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: { (action) -> Void in
+        }))
+        
+        sheet.addAction(UIAlertAction.init(title: "Show All", style: .default, handler: { (action) -> Void in
+            self.LoadData()
+        }))
+       
+        sheet.addAction(UIAlertAction.init(title: "Show iPhones", style: .default, handler: { (action) -> Void in
+            self.LoadData(deviceTypeFilter: "iPhone")
+        }))
+
+        sheet.addAction(UIAlertAction.init(title: "Show Watches", style: .default, handler: { (action) -> Void in
+            self.LoadData(deviceTypeFilter: "watch")
+        }))
+
+        present(sheet, animated: true, completion: nil)
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
